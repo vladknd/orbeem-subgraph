@@ -1,0 +1,55 @@
+specVersion: 0.0.5
+features: ["ipfsOnEthereumContracts"]
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: MarketNFT
+    network: matic
+    source:
+      address: "0x807F71A876AE2656d0b0F464584F6F46829bBb7a"
+      abi: NFTMarket
+      startBlock: 31952505
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./mappings/market.ts
+      entities:
+        - RuneNFT
+      abis:
+        - name: NFTMarket
+          file: ./abis/NFTMarket.json
+      eventHandlers:
+        - event: MarketItemCreated(indexed uint256,indexed address,indexed uint256,address,address,uint256,bool)
+          handler: handleMarketItemCreated
+        - event: MarketSaleCreated(indexed uint256,indexed address,indexed uint256,address,address,bool)
+          handler: handleMarketSaleCreated
+
+  - kind: ethereum
+    name: RuneNFT
+    network: matic
+    source:
+      address: "0xca8FEA3c0336f6498cF3789194817F4042b9d742"
+      abi: RuneNFT
+      startBlock: 31952520  
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./mappings/rune.ts
+      entities:
+        - Rune
+      abis:
+        - name: RuneNFT
+          file: ./abis/RuneNFT.json
+      eventHandlers:
+        - event: RuneCreated(indexed uint256,indexed address,string,indexed address,uint8,uint8,uint8,uint8)
+          handler: handleRuneCreated
+        - event: UpdatedAttributes(indexed uint256,uint8,uint8,uint8)
+          handler: handleUpdatedAttributes
+        - event: LeveledUp(indexed uint256,uint8)
+          handler: handleLeveledUp
+        # - event: Transfer(indexed address,indexed address,indexed uint256)
+        #   handler: handleTransfer
+      

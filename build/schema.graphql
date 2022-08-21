@@ -1,0 +1,25 @@
+type Rune @entity {
+    id: ID!
+    name: String
+    description: String
+    image: String
+    itemId: BigInt
+    tokenId: BigInt!
+    tokenURI: String
+    nftAddress: Bytes
+    owner: Bytes
+    seller: Bytes
+    price: BigInt
+    sold: Boolean
+
+    
+    level: Int
+    basePower: Int
+    baseDurability: Int
+    baseIntelligence: Int
+    
+    power: Int
+    durability: Int
+    intelligence: Int
+}
+

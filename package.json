@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "codegen": "graph codegen ./subgraph.yaml",
-    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ vladknd/orbeemmain --access-token 8a9f1aae54144d349f1fbc56588247cf"
+    "deploy main": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ vladknd/orbeemmain --access-token 8a9f1aae54144d349f1fbc56588247cf",
+    "deploy-dev": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ vladknd/orbeem --access-token 8a9f1aae54144d349f1fbc56588247cf"
   },
   "keywords": [],
   "author": "",

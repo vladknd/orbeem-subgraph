@@ -86,6 +86,25 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
@@ -134,6 +153,25 @@
       }
     ],
     "name": "RuneCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "game",
+        "type": "string"
+      }
+    ],
+    "name": "RuneInitialized",
     "type": "event"
   },
   {
@@ -379,6 +417,11 @@
         "internalType": "address",
         "name": "_marketAddress",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_orbAddress",
+        "type": "address"
       }
     ],
     "name": "initialize",
@@ -426,7 +469,7 @@
         "type": "uint8"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -437,6 +480,19 @@
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -459,6 +515,13 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -503,7 +566,7 @@
       },
       {
         "internalType": "bytes",
-        "name": "_data",
+        "name": "data",
         "type": "bytes"
       }
     ],
@@ -600,6 +663,19 @@
       }
     ],
     "name": "transferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: MarketNFT
-    network: matic
+    network: mumbai
     source:
-      address: "0x807F71A876AE2656d0b0F464584F6F46829bBb7a"
+      address: "0x0316c144E4000eeb6D7ae01450F277C13d012619"
       abi: NFTMarket
-      startBlock: 31952505
+      startBlock: 27726897
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -30,26 +30,52 @@ dataSources:
           handler: handleMarketSaleCreated
   - kind: ethereum
     name: RuneNFT
-    network: matic
+    network: mumbai
     source:
-      address: "0xca8FEA3c0336f6498cF3789194817F4042b9d742"
+      address: "0xE61a80BA54bD65Beb86f8758a442bdD6E7084fdd"
       abi: RuneNFT
-      startBlock: 31952520
+      startBlock: 27726897
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       file: RuneNFT/RuneNFT.wasm
       entities:
-        - Rune
+        - NFT
       abis:
         - name: RuneNFT
           file: RuneNFT/abis/RuneNFT.json
       eventHandlers:
+        - event: RuneInitialized(indexed string,indexed string)
+          handler: handleRuneInitialized
         - event: RuneCreated(indexed uint256,indexed address,string,indexed
             address,uint8,uint8,uint8,uint8)
           handler: handleRuneCreated
         - event: UpdatedAttributes(indexed uint256,uint8,uint8,uint8)
           handler: handleUpdatedAttributes
+        - event: LeveledUp(indexed uint256,uint8)
+          handler: handleLeveledUp
+  - kind: ethereum
+    name: Creeper
+    network: mumbai
+    source:
+      address: "0xF83fEFD50daFB3A7C7e92dce677d8BfFEaBF7176"
+      abi: Creeper
+      startBlock: 27726897
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: Creeper/Creeper.wasm
+      entities:
+        - NFT
+      abis:
+        - name: Creeper
+          file: Creeper/abis/Creeper.json
+      eventHandlers:
+        - event: CreeperCreated(indexed uint256,indexed address,string,indexed address,uint8)
+          handler: handleCreeperCreated
+        - event: CreeperInitialized(indexed string,indexed string)
+          handler: handleCreeperInitialized
         - event: LeveledUp(indexed uint256,uint8)
           handler: handleLeveledUp

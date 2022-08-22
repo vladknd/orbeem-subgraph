@@ -1,11 +1,11 @@
-import { Rune } from '../generated/schema'
-import { LeveledUp, RuneCreated, Transfer, UpdatedAttributes } from '../generated/RuneNFT/RuneNFT'
+import { Rune, Collection } from '../generated/schema'
+import { LeveledUp, RuneCreated, RuneInitialized, Transfer, UpdatedAttributes } from '../generated/RuneNFT/RuneNFT'
 import { Bytes, ipfs, Value, JSONValue, log, json } from '@graphprotocol/graph-ts'
 
 export function handleRuneCreated(event: RuneCreated): void {
-    let rune = Rune.load(event.params.tokenId.toHex())
+    let rune = Rune.load(event.params.nftAddress.toHex().toString().concat(event.params.tokenId.toHex().toString()))
     if(rune === null){
-        rune = new Rune(event.params.tokenId.toHex())
+        rune = new Rune(event.params.nftAddress.toHex().toString().concat(event.params.tokenId.toHex().toString()))
     }
 
     const path = event.params.tokenURI.substring(7) 
@@ -39,6 +39,12 @@ export function handleRuneCreated(event: RuneCreated): void {
     
     rune.level = event.params.level
         
+    let collection = Collection.load("1")
+    if(collection) {
+        rune.collection = collection.id
+    }
+    
+    
     rune.basePower = event.params.power
     rune.baseDurability = event.params.durability
     rune.baseIntelligence = event.params.intelligence
@@ -50,10 +56,18 @@ export function handleRuneCreated(event: RuneCreated): void {
     rune.save()
 }
 
+export function handleRuneInitialized(event: RuneInitialized): void {
+    let collection = new Collection("1") 
+    collection.description = "The first ORBEEM Dota collection allows ypu to get rewards for playing regualr matches"
+    collection.game = "DOTA2"
+    collection.name = "AEGIS"
+    collection.save()
+}
+
 export function handleUpdatedAttributes(event: UpdatedAttributes): void {
-    let rune = Rune.load(event.params.tokenId.toHex())
+    let rune = Rune.load("0xE61a80BA54bD65Beb86f8758a442bdD6E7084fdd".concat(event.params.tokenId.toHex().toString()))
     if(rune === null){
-        rune = new Rune(event.params.tokenId.toHex())
+        rune = new Rune(event.params.tokenId.toString())
     }
 
     rune.power = event.params.power
@@ -64,9 +78,9 @@ export function handleUpdatedAttributes(event: UpdatedAttributes): void {
 }
 
 export function handleLeveledUp(event: LeveledUp): void {
-    let rune = Rune.load(event.params.tokenId.toHex())
+    let rune = Rune.load("0xE61a80BA54bD65Beb86f8758a442bdD6E7084fdd".concat(event.params.tokenId.toHex().toString()))
     if(rune === null){
-        rune = new Rune(event.params.tokenId.toHex())
+        rune = new Rune(event.params.tokenId.toString())
     }
 
     rune.level = event.params.level

@@ -102,6 +102,28 @@ export class LeveledUp__Params {
   }
 }
 
+export class OwnershipTransferred extends ethereum.Event {
+  get params(): OwnershipTransferred__Params {
+    return new OwnershipTransferred__Params(this);
+  }
+}
+
+export class OwnershipTransferred__Params {
+  _event: OwnershipTransferred;
+
+  constructor(event: OwnershipTransferred) {
+    this._event = event;
+  }
+
+  get previousOwner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newOwner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class RuneCreated extends ethereum.Event {
   get params(): RuneCreated__Params {
     return new RuneCreated__Params(this);
@@ -145,6 +167,28 @@ export class RuneCreated__Params {
 
   get intelligence(): i32 {
     return this._event.parameters[7].value.toI32();
+  }
+}
+
+export class RuneInitialized extends ethereum.Event {
+  get params(): RuneInitialized__Params {
+    return new RuneInitialized__Params(this);
+  }
+}
+
+export class RuneInitialized__Params {
+  _event: RuneInitialized;
+
+  constructor(event: RuneInitialized) {
+    this._event = event;
+  }
+
+  get name(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get game(): Bytes {
+    return this._event.parameters[1].value.toBytes();
   }
 }
 
@@ -445,25 +489,6 @@ export class RuneNFT extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  levelUp(_tokenId: BigInt): i32 {
-    let result = super.call("levelUp", "levelUp(uint256):(uint8)", [
-      ethereum.Value.fromUnsignedBigInt(_tokenId)
-    ]);
-
-    return result[0].toI32();
-  }
-
-  try_levelUp(_tokenId: BigInt): ethereum.CallResult<i32> {
-    let result = super.tryCall("levelUp", "levelUp(uint256):(uint8)", [
-      ethereum.Value.fromUnsignedBigInt(_tokenId)
-    ]);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toI32());
-  }
-
   name(): string {
     let result = super.call("name", "name():(string)", []);
 
@@ -477,6 +502,21 @@ export class RuneNFT extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
+  }
+
+  owner(): Address {
+    let result = super.call("owner", "owner():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_owner(): ethereum.CallResult<Address> {
+    let result = super.tryCall("owner", "owner():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   ownerOf(tokenId: BigInt): Address {
@@ -705,6 +745,10 @@ export class InitializeCall__Inputs {
   get _marketAddress(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
+
+  get _orbAddress(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
 }
 
 export class InitializeCall__Outputs {
@@ -746,6 +790,32 @@ export class LevelUpCall__Outputs {
 
   get newLevel(): i32 {
     return this._call.outputValues[0].value.toI32();
+  }
+}
+
+export class RenounceOwnershipCall extends ethereum.Call {
+  get inputs(): RenounceOwnershipCall__Inputs {
+    return new RenounceOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): RenounceOwnershipCall__Outputs {
+    return new RenounceOwnershipCall__Outputs(this);
+  }
+}
+
+export class RenounceOwnershipCall__Inputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall__Outputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
   }
 }
 
@@ -816,7 +886,7 @@ export class SafeTransferFrom1Call__Inputs {
     return this._call.inputValues[2].value.toBigInt();
   }
 
-  get _data(): Bytes {
+  get data(): Bytes {
     return this._call.inputValues[3].value.toBytes();
   }
 }
@@ -897,6 +967,36 @@ export class TransferFromCall__Outputs {
   _call: TransferFromCall;
 
   constructor(call: TransferFromCall) {
+    this._call = call;
+  }
+}
+
+export class TransferOwnershipCall extends ethereum.Call {
+  get inputs(): TransferOwnershipCall__Inputs {
+    return new TransferOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): TransferOwnershipCall__Outputs {
+    return new TransferOwnershipCall__Outputs(this);
+  }
+}
+
+export class TransferOwnershipCall__Inputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+
+  get newOwner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class TransferOwnershipCall__Outputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
     this._call = call;
   }
 }
